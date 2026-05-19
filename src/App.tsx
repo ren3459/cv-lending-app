@@ -64,11 +64,11 @@ const cases = [
   },
 ];
 
-// const aiPrompts = [
-//   "React лендинг с формой обратной связи и отправкой писем",
-//   "Dashboard для менеджеров с фильтрами, карточками и REST API",
-//   "AI помощник для подготовки коротких резюме по проектам",
-// ];
+const aiPrompts = [
+  "React лендинг с формой обратной связи и отправкой писем",
+  "Dashboard для менеджеров с фильтрами, карточками и REST API",
+  "AI помощник для подготовки коротких резюме по проектам",
+];
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") || "";
 const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
@@ -76,9 +76,9 @@ const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
 function App() {
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [serverMessage, setServerMessage] = useState("");
-  // const [aiInput, setAiInput] = useState(aiPrompts[0]);
-  // const [aiSummary, setAiSummary] = useState("");
-  // const [aiLoading, setAiLoading] = useState(false);
+  const [aiInput, setAiInput] = useState(aiPrompts[0]);
+  const [aiSummary, setAiSummary] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
 
   const {
     register,
@@ -109,8 +109,6 @@ function App() {
     setServerMessage("");
 
     try {
-      console.log(apiBaseUrl);
-
       const response = await fetch(apiUrl("/api/contact"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -137,36 +135,36 @@ function App() {
     }
   };
 
-  // const generateSummary = async () => {
-  //   setAiLoading(true);
-  //   setAiSummary("");
+  const generateSummary = async () => {
+    setAiLoading(true);
+    setAiSummary("");
 
-  //   try {
-  //     const response = await fetch(apiUrl("/api/ai-summary"), {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ prompt: aiInput }),
-  //     });
-  //     const result = (await response.json()) as {
-  //       summary?: string;
-  //       message?: string;
-  //     };
+    try {
+      const response = await fetch(apiUrl("/api/ai-summary"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: aiInput }),
+      });
+      const result = (await response.json()) as {
+        summary?: string;
+        message?: string;
+      };
 
-  //     if (!response.ok) {
-  //       throw new Error(result.message || "AI helper временно недоступен");
-  //     }
+      if (!response.ok) {
+        throw new Error(result.message || "AI helper временно недоступен");
+      }
 
-  //     setAiSummary(result.summary || "");
-  //   } catch (error) {
-  //     setAiSummary(
-  //       error instanceof Error
-  //         ? error.message
-  //         : "Не удалось получить AI-резюме. Основная форма при этом работает отдельно.",
-  //     );
-  //   } finally {
-  //     setAiLoading(false);
-  //   }
-  // };
+      setAiSummary(result.summary || "");
+    } catch (error) {
+      setAiSummary(
+        error instanceof Error
+          ? error.message
+          : "Не удалось получить AI-резюме. Основная форма при этом работает отдельно.",
+      );
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   return (
     <main className="page-shell">
@@ -278,7 +276,7 @@ function App() {
         </div>
       </section>
 
-      {/* <section className="section ai-section" aria-labelledby="ai-title">
+      <section className="section ai-section" aria-labelledby="ai-title">
         <div className="section-heading">
           <p className="eyebrow">AI-интеграция</p>
           <h2 id="ai-title">Мини helper для резюме проекта</h2>
@@ -314,7 +312,7 @@ function App() {
           </button>
           {aiSummary && <p className="ai-result">{aiSummary}</p>}
         </div>
-      </section> */}
+      </section>
 
       <section className="section" id="cases">
         <div className="section-heading">
