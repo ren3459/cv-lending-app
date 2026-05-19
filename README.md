@@ -2,15 +2,6 @@
 
 Frontend лендинга на React, TypeScript и Vite. Приложение показывает опыт, стек, кейсы и форму обратной связи.
 
-## Стек
-
-- React 19
-- TypeScript
-- Vite
-- CSS
-- React Hook Form
-- Zod
-
 ## Как запустить
 
 ```bash
@@ -20,7 +11,7 @@ npm run dev
 
 Frontend будет доступен по адресу, который выведет Vite.
 
-Для проверки production-сборки:
+Production-сборка:
 
 ```bash
 npm run build
@@ -35,20 +26,73 @@ npm run preview
 VITE_API_BASE_URL=http://127.0.0.1:4000
 ```
 
-Если `VITE_API_BASE_URL` не задан, frontend будет отправлять `/api/contact` на тот же origin. В локальной разработке Vite также проксирует `/api` на `http://localhost:4000`.
+## Стек
 
-## Форма обратной связи
+### Frontend
 
-Форма находится в `src/App.tsx`.
+- React
+- TypeScript
+- Vite
+- CSS / SCSS
+- Fetch API
+- адаптивная верстка
 
-- Поля: имя, телефон, email, комментарий.
-- Клиентская валидация сделана через `react-hook-form` и `zod`.
-- При отправке выполняется `POST /api/contact`.
-- UI показывает loading, success и error состояния.
-- После успешной отправки форма очищается.
+### Backend
 
-Серверная обработка формы находится в отдельном проекте `cv-lending-api`.
+- Node.js
+- Express
+- TypeScript
+- Nodemailer
+- express-rate-limit
+- CORS
+- dotenv
+- OpenRouter API
+
+## Форма
+
+Поля:
+
+- имя
+- телефон
+- email
+- комментарий
+
+Схема работы:
+
+```txt
+Frontend → API → SMTP → Email owner + Email copy
+```
+
+Реализованы:
+
+- loading;
+- success;
+- error;
+- disabled state во время отправки.
+
+AI-summary не ломает основной сценарий, если AI недоступен.
 
 ## AI-интеграция
 
-В `src/App.tsx` оставлена закомментированная заготовка AI-блока. Серверный роут `POST /api/ai-summary` уже есть в `cv-lending-api`, но на главной странице блок пока не отображается.
+Используется OpenRouter API для генерации AI-summary.
+
+## Какие AI-инструменты использовались
+
+- ChatGPT
+- OpenRouter
+
+## Что делалось с помощью ИИ
+
+- обсуждение архитектуры;
+- получение стартовых вариантов реализации;
+- анализ ошибок и альтернативных решений.
+
+## Что пришлось исправлять вручную
+
+- структура frontend-проекта;
+- интеграция клиента с API;
+- логика формы и пользовательские сценарии;
+- обработка ошибок;
+- интеграция frontend и backend на Vercel;
+- настройка production-конфигурации;
+- тестирование и отладка после деплоя.
