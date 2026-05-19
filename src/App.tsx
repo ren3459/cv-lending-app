@@ -70,7 +70,11 @@ const aiPrompts = [
   "AI помощник для подготовки коротких резюме по проектам",
 ];
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") || "";
+const shouldUseVercelProxy =
+  typeof window !== "undefined" && window.location.hostname.endsWith(".vercel.app");
+const apiBaseUrl = shouldUseVercelProxy
+  ? ""
+  : import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") || "";
 const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
 
 function App() {
